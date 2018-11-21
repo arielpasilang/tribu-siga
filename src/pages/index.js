@@ -9,18 +9,18 @@ export default () => (
                 <div class="row features">
                     <div class="col-md-4 text-center wow fadeInUp" data-wow-delay="100ms">
                         <span class="typcn typcn-pencil x3"></span>
-                        <h4>Consectetur Risus</h4>
-                        <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                        <h4>Facts</h4>
+                        <p>Tribu Siga officially started last January 7, 2017. It all started when Edward, Ronald, and Ariel decided to climb Osmena Peak, Dalaguete, Cebu from Badian that is known as halfmoon trail. Guided by our friend Chatz and Jezon.</p>
                     </div>
                     <div class="col-md-4 text-center wow fadeInUp" data-wow-delay="300ms">
                         <span class="typcn typcn-camera-outline x3"></span>
-                        <h4>Ultricies Aenean</h4>
+                        <h4>Mission</h4>
                         <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Donec ullamcorper nulla non metus auctor fringilla.</p>
                     </div>
                     <div class="col-md-4 text-center wow fadeInUp" data-wow-delay="500ms">
                         <span class="typcn typcn-bookmark x3"></span>
-                        <h4>Cras Sollicitudin</h4>
-                        <p>Etiam porta sem malesuada magna mollis euismod. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Maecenas faucibus mollis interdum.</p>
+                        <h4>Next Major Climb</h4>
+                        <p>Each year, we plan at least 1 to 2 majors per year. We are looking forward on climbing Mt. Kalatungan and Mt. Halcon in 2019.</p>
                     </div>
                 </div>
             </div>
@@ -35,6 +35,7 @@ export default () => (
                                 <div class="col-md-offset-1 col-md-10">
                                     <h3>Ligula Mattis Ornare Ultricies</h3>
                                     <h5>Pellentesque Cursus Amet Parturient Etiam</h5>
+                                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
                                     <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
                                 </div>
                             </div>
