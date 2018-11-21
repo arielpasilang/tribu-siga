@@ -235,6 +235,6 @@ a{
     text-shadow: none !important;
     text-decoration: none !important;
     color: white !important;
-    background-image: none;
+    background-image: none !important;
 }
 .home a{ color: #fff; }
