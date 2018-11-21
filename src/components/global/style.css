@@ -98,6 +98,15 @@ header .container-fluid
     color: #FFFFFF;
     margin-bottom: 5%;
 }
+@media (max-width: 767px) {
+    .jumbotron h1{
+        font-size: 28pt;
+    }
+    .jumbotron p
+    {
+        font-size: 12pt !important;
+    }
+}
 
 
 /*------------------------------------*\
@@ -204,7 +213,7 @@ footer p
     padding-top: 50px;
 }
 .sidebar{
-    width: 200px;
+    width: 180px;
 }
 #sidebarID {
     position: fixed !important;
@@ -217,7 +226,6 @@ footer p
 .sidebarinner a{
     color: white;
     text-decoration: none;
-    
     font-size: 20pt;
 }
 a:hover{
@@ -226,5 +234,6 @@ a:hover{
 a{
     text-shadow: none !important;
     text-decoration: none !important;
+    color: white !important;
 }
 .home a{ color: #fff; }

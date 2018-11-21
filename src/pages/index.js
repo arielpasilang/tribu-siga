@@ -64,7 +64,7 @@ export default () => (
             <div class="container">
                 <div class="row">
                     <div class="masonry image-gallery">
-
+                    	<h1>Photo gallery Area</h1>
                     </div>
                 </div>
             </div>

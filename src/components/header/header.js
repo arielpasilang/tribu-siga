@@ -53,9 +53,9 @@ class App extends React.Component {
                     <div className="jumbotron">
                         <h1><small>In the hall of the </small><br />
                         <strong>Mountain King</strong></h1>
-                        <br /><br />
-                        <p>"In every mountain we climb, we create wonderful memories, <br />
-                        meets awesome friends and a thousand stories to tell" <br />
+                        <br />
+                        <p>"In every mountain we climb, we create wonderful memories, meets awesome friends and a thousand stories to tell" 
+                        <br />
                         -tribusigamountaineers (Mt. Talinis April 12-15, 2017)</p>
                     </div>
                 </div>
