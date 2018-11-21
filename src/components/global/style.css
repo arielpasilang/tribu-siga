@@ -221,9 +221,10 @@ footer p
     font-size: 20pt;
 }
 a:hover{
-    text-decoration: none;
+    text-decoration: none !important;
 }
 a{
-    text-shadow: none;
+    text-shadow: none !important;
+    text-decoration: none !important;
 }
 .home a{ color: #fff; }
