@@ -41,10 +41,10 @@ class App extends React.Component {
             <div className="container-fluid">
                 <div className="container">
                     <div className="row">
-                        <div className="col-md-3 col-xs-10">
+                        <div className="col-md-10 col-10">
                           <h4><Link to="/">Tribu Siga Mountaineers</Link></h4>
                         </div>
-                        <div className="col-md-9 col-md-offset-8 col-xs-2 text-center">
+                        <div className="col-md-2 col-2 text-center">
                           <div className="menu-btn"><span className="hamburger" onClick={() => this.onSetSidebarOpen(true)}>&#9776;</span></div>
                         </div>
                     </div>
