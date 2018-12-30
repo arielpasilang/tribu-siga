@@ -2,8 +2,12 @@ import React from "react"
 import Layout from "../components/layout"
 import { Slide } from "react-slideshow-image"
 import slide1 from "../images/slider1.jpg"
-import slide2 from "../images/slider2.jpg"
-import slide3 from "../images/slider31.jpg"
+import slide2 from "../images/slider-bmc.jpg"
+import slide3 from "../images/slider2.jpg"
+import slide4 from "../images/kandungaw.jpg"
+import slide5 from "../images/apo.jpg"
+import slide6 from "../images/anniv.jpg"
+import slide7 from "../images/slider31.jpg"
  
 const properties = {
   duration: 5000,
@@ -60,20 +64,58 @@ export default () => (
         	<Slide {...properties}>
 			    <div className="each-slide">
 			        <div style={{'backgroundImage': `url(${slide1})`}}>
-			 	       <h4>Mt. Talinis, Valencia, Negros Oriental</h4>
-			 	       <h5>April 15-18, 2017</h5>
+			        	<div className="transbox">
+				 	       <h4>Mt. Talinis, Valencia, Negros Oriental</h4>
+				 	       <h5>April 15-18, 2017</h5>
+			 	       </div>
 			        </div>
 			    </div>
 			    <div className="each-slide">
 			        <div style={{'backgroundImage': `url(${slide2})`}}>
+			        <div className="transbox">
+			 	       <h4>Basic Mountaineering Course 1</h4>
+			 	       <h5>June 12, 2017</h5>
+			 	      </div>
+			        </div>
+			    </div>
+			    <div className="each-slide">
+			        <div style={{'backgroundImage': `url(${slide3})`}}>
+			        <div className="transbox">
 			 	       <h4>Mt. Mandalagan, Bacolod, Negros Occidental</h4>
 			 	       <h5>Sept 01-03, 2017</h5>
+			 	    </div>
+			    </div>
+				</div>
+				<div className="each-slide">
+			        <div style={{'backgroundImage': `url(${slide4})`}}>
+			        <div className="transbox">
+			 	       <h4>Kandungaw Peak, Dalaguete, Cebu</h4>
+			 	       <h5>October 07-08, 2017</h5>
+			 	    </div>
 			        </div>
 				</div>
-							    <div className="each-slide">
-			        <div style={{'backgroundImage': `url(${slide3})`}}>
+				<div className="each-slide">
+			        <div style={{'backgroundImage': `url(${slide5})`}}>
+			        <div className="transbox">
+			 	       <h4>Mt. Apo Day Hike, Davao</h4>
+			 	       <h5>Nov 3, 2017</h5>
+			 	    </div>
+			        </div>
+				</div>
+				<div className="each-slide">
+			        <div style={{'backgroundImage': `url(${slide6})`}}>
+			        <div className="transbox">
+			 	       <h4>Tribu Siga 1st Anniversary</h4>
+			 	       <h5>January 13-14, 2018</h5>
+			 	    </div>
+			        </div>
+				</div>
+				<div className="each-slide">
+			        <div style={{'backgroundImage': `url(${slide7})`}}>
+			        <div className="transbox">
 			 	       <h4>Mt. Guiting Guiting, Sibuyan Island, Romblon</h4>
 			 	       <h5>March 30 - April 01, 2018</h5>
+			 	    </div>
 			        </div>
 				</div>
 			</Slide>
