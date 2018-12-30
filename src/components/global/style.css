@@ -78,8 +78,9 @@ header .container-fluid
 
 .jumbotron
 {
-    background: none;
+    background: none !important;
     text-align: center;
+    background-color: none !important;
 }
 
 .jumbotron h1,
@@ -100,16 +101,8 @@ header .container-fluid
     margin-bottom: 5%;
     font-weight: 400 !important;
 }
-@media (max-width: 767px) {
-    .jumbotron h1{
-        font-size: 28pt;
-    }
-    .jumbotron p
-    {
-        font-size: 12pt !important;
-    }
-}
-@media (max-width: 320px) {
+
+@media (max-width: 360px) {
     .jumbotron h1{
         font-size: 25pt;
     }
@@ -128,12 +121,58 @@ header .container-fluid
         text-align: center;
         font-size: 11px;
     }
-        .each-slide div{
-        height: 200px;
+    .each-slide div{
+        height: 300px;
+    }
+}
+@media (min-width: 361px) and (max-width: 568px) {
+    .jumbotron h1{
+        font-size: 30px;
+    }
+    .jumbotron p
+    {
+        font-size: 15px !important;
+    }
+    .each-slide h4{
+    color: #111111;
+    text-align: center;
+    padding: 15px 10px 10px 10px;
+    font-size: 22px;
+    }
+    .each-slide h5{
+        color: #111111;
+        text-align: center;
+        font-size: 15px;
+    }
+    .each-slide div{
+        height: 500px;
+    }
+}
+@media (max-width: 768px) {
+    .jumbotron h1{
+        font-size: 28pt;
+    }
+    .jumbotron p
+    {
+        font-size: 12pt !important;
+    }
+    .each-slide h4{
+    color: #111111;
+    text-align: center;
+    padding: 15px 10px 10px 10px;
+    font-size: 22px;
+    }
+    .each-slide h5{
+        color: #111111;
+        text-align: center;
+        font-size: 15px;
+    }
+    .each-slide div{
+        height: 500px;
     }
 
 }
-@media screen only (min-width: 990px){
+@media only screen and (min-width: 991px){
   .each-slide h4{
     color: #111111;
     text-align: center;
