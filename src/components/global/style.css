@@ -134,10 +134,10 @@ header .container-fluid
         font-size: 11px;
     }
     .each-slide div{
-        height: 300px;
+        height: 200px;
     }
     .transbox{
-        max-height: 120px;
+        max-height: 130px;
     }
 }
 @media (min-width: 361px) and (max-width: 568px) {
@@ -193,11 +193,11 @@ header .container-fluid
     .each-slide h4{
         text-align: center;
         padding: 50px 10px 10px 10px;
-        font-size: 36px;
+        font-size: 36px !important;
     }
     .each-slide h5{
         text-align: center;
-        font-size: 30px;
+        font-size: 30px !important;
     }
     .each-slide div{
         height: 700px;
