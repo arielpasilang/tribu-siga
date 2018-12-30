@@ -88,15 +88,17 @@ header .container-fluid
 .jumbotron h4,
 .jumbotron h5,
 .jumbotron h6,
-.jumbotron small
+.jumbotron small,
+.jumbotron strong
 {
-    color: #FFFFFF;
+    color: #111111;
 }
 
 .jumbotron p
 {
-    color: #FFFFFF;
+    color: #111111;
     margin-bottom: 5%;
+    font-weight: 400 !important;
 }
 @media (max-width: 767px) {
     .jumbotron h1{
@@ -106,6 +108,51 @@ header .container-fluid
     {
         font-size: 12pt !important;
     }
+}
+@media (max-width: 320px) {
+    .jumbotron h1{
+        font-size: 25pt;
+    }
+    .jumbotron p
+    {
+        font-size: 11pt !important;
+    }
+    .each-slide h4{
+    color: #111111;
+    text-align: center;
+    padding: 15px 10px 10px 10px;
+    font-size: 16px;
+    }
+    .each-slide h5{
+        color: #111111;
+        text-align: center;
+        font-size: 11px;
+    }
+        .each-slide div{
+        height: 200px;
+    }
+
+}
+@media screen only (min-width: 990px){
+  .each-slide h4{
+    color: #111111;
+    text-align: center;
+    padding: 50px 10px 10px 10px;
+    }
+    .each-slide h5{
+        color: #111111;
+        text-align: center;
+    }
+    .each-slide div{
+        height: 700px;
+    }
+
+}
+    .each-slide div{
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
 }
 
 
@@ -159,12 +206,6 @@ header .container-fluid
     background-size: cover;
     background-position: center;
 }
-
-.gallery
-{
-    background-color: #dddddd;
-}
-
 .prefooter .container-fluid
 {
     background: linear-gradient(
@@ -238,3 +279,17 @@ a{
     background-image: none !important;
 }
 .home a{ color: #fff; }
+
+.gallery{
+    padding-top: 0 !important;
+}
+.gallery h2{
+    background-color: #fff !important;
+    text-align: center !important;
+}
+.nav{
+    padding-left: 10px !important;
+}
+.opaline h1, .opaline h2, .opaline h3, .opaline h4, .opaline h5, .opaline h6, .opaline p{
+    color: #111111;
+}

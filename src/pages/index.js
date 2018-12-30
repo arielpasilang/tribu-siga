@@ -1,5 +1,17 @@
 import React from "react"
 import Layout from "../components/layout"
+import { Slide } from "react-slideshow-image"
+import slide1 from "../images/slider1.jpg"
+import slide2 from "../images/slider2.jpg"
+import slide3 from "../images/slider31.jpg"
+ 
+const properties = {
+  duration: 5000,
+  transitionDuration: 500,
+  infinite: true,
+  indicators: true,
+  arrows: true
+}
 
 export default () => (
 <Layout>
@@ -10,12 +22,12 @@ export default () => (
                     <div class="col-md-4 text-center wow fadeInUp" data-wow-delay="100ms">
                         <span class="typcn typcn-pencil x3"></span>
                         <h4>Facts</h4>
-                        <p>Tribu Siga officially started last January 7, 2017. It all started when Edward, Ronald, and Ariel decided to climb Osmena Peak, Dalaguete, Cebu from Badian that is known as halfmoon trail. Guided by our friend Chatz and Jezon.</p>
+                        <p>Tribu Siga officially started last January 7, 2017. It all started when Edward, Ronald, and Ariel decided to climb Osmena Peak, Dalaguete, Cebu from Badian that is known as halfmoon trail.</p>
                     </div>
                     <div class="col-md-4 text-center wow fadeInUp" data-wow-delay="300ms">
                         <span class="typcn typcn-camera-outline x3"></span>
                         <h4>Mission</h4>
-                        <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                        <p>We are a group of mountain enthusiast that promotes camaraderie and Leave No Trace. To make a difference in peoples lives in the mountains by being a volunteer and show kindness.</p>
                     </div>
                     <div class="col-md-4 text-center wow fadeInUp" data-wow-delay="500ms">
                         <span class="typcn typcn-bookmark x3"></span>
@@ -33,10 +45,9 @@ export default () => (
                         <div class="col-md-6 opaline col-md-offset-6 pull-right">
                             <div class="row">
                                 <div class="col-md-offset-1 col-md-10">
-                                    <h3>Ligula Mattis Ornare Ultricies</h3>
-                                    <h5>Pellentesque Cursus Amet Parturient Etiam</h5>
-                                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                                    <h3>Why we climb the mountains high?</h3>
+                                    <p>Sure, climbing mountains are tiring and can be dangerous! Sometimes we have to travel very far just to get to the top.</p>
+                                    <p>But for us, being in the mountains is the best feelings and purest form of exploration. Every mountain has its own hardships and character to conquer. <strong>Every climb is a new challenge to overcome and new memories to make </strong> with our friends. Keep climbing till our body can't.</p>
                                 </div>
                             </div>
                         </div>
@@ -44,32 +55,29 @@ export default () => (
                 </div>
             </div>
         </section>
-
-        <section id="news" class="blog wow fadeInUp" data-wow-delay="300ms">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-7">
-                        <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2>
-                        <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas sed diam eget risus varius blandit sit amet non magna. Donec sed odio dui. Curabitur blandit tempus porttitor. Nullam id dolor id nibh ultricies vehicula ut id elit. Etiam porta sem malesuada magna mollis euismod.</p>
-                        <p>Donec id elit non mi porta gravida at eget metus. Donec id elit non mi porta gravida at eget metus. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nulla vitae elit libero, a pharetra augue.</p>
-                    </div>
-                    <div class="col-md-5">
-
-                    </div>
-                </div>
-            </div>
+        <section id="photos" className="gallery wow fadeInUp" data-wow-delay="300ms">
+        	<h2>Tribu Siga Gallery Area</h2>
+        	<Slide {...properties}>
+			    <div className="each-slide">
+			        <div style={{'backgroundImage': `url(${slide1})`}}>
+			 	       <h4>Mt. Talinis, Valencia, Negros Oriental</h4>
+			 	       <h5>April 15-18, 2017</h5>
+			        </div>
+			    </div>
+			    <div className="each-slide">
+			        <div style={{'backgroundImage': `url(${slide2})`}}>
+			 	       <h4>Mt. Mandalagan, Bacolod, Negros Occidental</h4>
+			 	       <h5>Sept 01-03, 2017</h5>
+			        </div>
+				</div>
+							    <div className="each-slide">
+			        <div style={{'backgroundImage': `url(${slide3})`}}>
+			 	       <h4>Mt. Guiting Guiting, Sibuyan Island, Romblon</h4>
+			 	       <h5>March 30 - April 01, 2018</h5>
+			        </div>
+				</div>
+			</Slide>
         </section>
-
-        <section id="photos" class="gallery wow fadeInUp" data-wow-delay="300ms">
-            <div class="container">
-                <div class="row">
-                    <div class="masonry image-gallery">
-                    	<h1>Photo gallery Area</h1>
-                    </div>
-                </div>
-            </div>
-        </section>
-
     </div>
 </Layout>
 )
