@@ -1,23 +1,39 @@
 module.exports = {
+  siteMetadata: {
+    title: `Tribu Siga Mountaineers`,
+    description: `A tribe of mountain enthusiasts from Cebu, Philippines. Camaraderie, Leave No Trace, and a thousand stories from the summits we chase.`,
+    siteUrl: `https://tribusiga.com`,
+  },
   plugins: [
+    `gatsby-plugin-image`,
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
     {
-      resolve: `gatsby-plugin-typography`,
+      resolve: `gatsby-source-filesystem`,
       options: {
-        pathToConfigModule: `src/utils/typography.js`,
+        name: `images`,
+        path: `${__dirname}/src/images`,
       },
     },
     {
-      resolve: `gatsby-plugin-google-fonts`,
+      resolve: `gatsby-source-filesystem`,
       options: {
-        fonts: [
-          `limelight`,
-          `source sans pro\:300,400,400i,700`,
-          `roboto slab\:400,300,700,100`,
-          `raleway\:300,700,900,500`
-
-           // you can also specify font weights and styles
-        ]
-      }
-    }
+        name: `adventures`,
+        path: `${__dirname}/content/adventures`,
+      },
+    },
+    `gatsby-transformer-remark`,
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `Tribu Siga Mountaineers`,
+        short_name: `Tribu Siga`,
+        start_url: `/`,
+        background_color: `#0d1210`,
+        theme_color: `#e8973a`,
+        display: `standalone`,
+        icon: `src/images/logo.jpg`,
+      },
+    },
   ],
 }

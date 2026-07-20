@@ -1,125 +1,217 @@
-import React from "react"
+import * as React from "react"
+import { Link, graphql } from "gatsby"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import Layout from "../components/layout"
-import { Slide } from "react-slideshow-image"
-import slide1 from "../images/slider1.jpg"
-import slide2 from "../images/slider-bmc.jpg"
-import slide3 from "../images/slider2.jpg"
-import slide4 from "../images/kandungaw.jpg"
-import slide5 from "../images/apo.jpg"
-import slide6 from "../images/anniv.jpg"
-import slide7 from "../images/slider31.jpg"
- 
-const properties = {
-  duration: 5000,
-  transitionDuration: 500,
-  infinite: true,
-  indicators: true,
-  arrows: true
+import Seo from "../components/seo"
+import AdventureCard from "../components/adventure-card"
+
+const IndexPage = ({ data }) => {
+  const hero = getImage(data.hero)
+  const story = getImage(data.story)
+  const cta = getImage(data.cta)
+  const adventures = data.allMarkdownRemark.nodes
+  const featured = adventures.slice(0, 3)
+
+  return (
+    <Layout>
+      <section className="hero">
+        {hero && (
+          <GatsbyImage
+            image={hero}
+            alt="The tribe at Lake Nailig, Mt. Talinis"
+            className="hero-bg"
+            loading="eager"
+            objectFit="cover"
+          />
+        )}
+        <div className="container">
+          <span className="eyebrow">Est. January 2017 · Cebu, Philippines</span>
+          <h1 className="display">
+            Keep the flame lit.<br />
+            <em>Keep climbing.</em>
+          </h1>
+          <p className="motto">
+            “In every mountain we climb, we create wonderful memories, meet
+            awesome friends, and a thousand stories to tell.” We are Tribu Siga
+            — a tribe of mountain enthusiasts chasing summits across the
+            Philippines.
+          </p>
+          <div className="actions">
+            <Link to="/adventures/" className="btn btn-primary">
+              Our Expeditions →
+            </Link>
+            <Link to="/about/" className="btn btn-ghost">
+              The Story
+            </Link>
+          </div>
+        </div>
+        <span className="scroll-cue">Scroll</span>
+      </section>
+
+      <section className="stats">
+        <div className="container grid">
+          <div className="stat">
+            <div className="num">{adventures.length}</div>
+            <div className="label">Expeditions</div>
+          </div>
+          <div className="stat">
+            <div className="num">2,954 m</div>
+            <div className="label">Highest Summit — Mt. Apo</div>
+          </div>
+          <div className="stat">
+            <div className="num">4</div>
+            <div className="label">Islands Explored</div>
+          </div>
+          <div className="stat">
+            <div className="num">∞</div>
+            <div className="label">Stories to Tell</div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container split">
+          <div>
+            <span className="eyebrow">Why we climb</span>
+            <h2 className="display section-title">
+              Every summit is a new story
+            </h2>
+            <div className="body">
+              <p>
+                Sure — climbing mountains is tiring, and sometimes dangerous.
+                We travel far, carry heavy packs, sleep in the rain, and wake
+                up sore. And we keep coming back.
+              </p>
+              <p>
+                For us, being in the mountains is the purest form of
+                exploration. Every peak has its own character and its own
+                hardships to overcome. <strong>Every climb is a new challenge
+                and a new memory made with friends</strong> — and we'll keep
+                climbing until our legs say otherwise.
+              </p>
+            </div>
+          </div>
+          <div className="photo">
+            {story && (
+              <GatsbyImage image={story} alt="Camp in a hidden valley on Mt. Mandalagan" />
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section className="section" style={{ paddingTop: 0 }}>
+        <div className="container">
+          <span className="eyebrow">The logbook</span>
+          <h2 className="display section-title">Latest expeditions</h2>
+          <div className="card-grid">
+            {featured.map(node => (
+              <AdventureCard key={node.id} adventure={node} />
+            ))}
+          </div>
+          <p style={{ marginTop: "2.2rem" }}>
+            <Link to="/adventures/" className="btn btn-ghost">
+              Browse the full logbook →
+            </Link>
+          </p>
+        </div>
+      </section>
+
+      <section className="section values" style={{ paddingTop: 0 }}>
+        <div className="container">
+          <span className="eyebrow">What we stand for</span>
+          <h2 className="display section-title">The tribe code</h2>
+          <div className="grid">
+            <div className="value-card">
+              <div className="icon">🤝</div>
+              <h3>Camaraderie</h3>
+              <p>
+                Nobody summits alone. Like the two climbers in our logo, we
+                pull each other up the mountain — on the trail and off it.
+              </p>
+            </div>
+            <div className="value-card">
+              <div className="icon">🍃</div>
+              <h3>Leave No Trace</h3>
+              <p>
+                We practice and teach the seven LNT principles on every climb.
+                The only things we take are pictures and stories.
+              </p>
+            </div>
+            <div className="value-card">
+              <div className="icon">🔥</div>
+              <h3>Give Back</h3>
+              <p>
+                We volunteer in the mountain communities that host us and show
+                kindness wherever the trail leads.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="cta-band">
+        {cta && (
+          <GatsbyImage image={cta} alt="Limestone crags of Kandungaw Peak" className="hero-bg" objectFit="cover" />
+        )}
+        <div className="container">
+          <span className="eyebrow" style={{ justifyContent: "center" }}>
+            Join the tribe
+          </span>
+          <h2 className="display">The mountains are calling — come with us.</h2>
+          <p>
+            We run open climbs, training courses, and at least one major
+            expedition every year. New members are always welcome.
+          </p>
+          <Link to="/contact/" className="btn btn-primary">
+            Get in touch →
+          </Link>
+        </div>
+      </section>
+    </Layout>
+  )
 }
 
-export default () => (
-<Layout>
-	<div>
-        <section id="feat">
-            <div class="container">
-                <div class="row features">
-                    <div class="col-md-4 text-center wow fadeInUp" data-wow-delay="100ms">
-                        <span class="typcn typcn-pencil x3"></span>
-                        <h4>Facts</h4>
-                        <p>Tribu Siga officially started last January 7, 2017. It all started when Edward, Ronald, and Ariel decided to climb Osmena Peak, Dalaguete, Cebu from Badian that is known as halfmoon trail.</p>
-                    </div>
-                    <div class="col-md-4 text-center wow fadeInUp" data-wow-delay="300ms">
-                        <span class="typcn typcn-camera-outline x3"></span>
-                        <h4>Mission</h4>
-                        <p>We are a group of mountain enthusiast that promotes camaraderie and Leave No Trace. To make a difference in peoples lives in the mountains by being a volunteer and show kindness.</p>
-                    </div>
-                    <div class="col-md-4 text-center wow fadeInUp" data-wow-delay="500ms">
-                        <span class="typcn typcn-bookmark x3"></span>
-                        <h4>Next Major Climb</h4>
-                        <p>Each year, we plan at least 1 to 2 majors per year. We are looking forward on climbing Mt. Kalatungan and Mt. Halcon in 2019.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+export const query = graphql`
+  query {
+    hero: file(relativePath: { eq: "talinis.jpg" }) {
+      childImageSharp {
+        gatsbyImageData(layout: FULL_WIDTH, quality: 80)
+      }
+    }
+    story: file(relativePath: { eq: "mandalagan.jpg" }) {
+      childImageSharp {
+        gatsbyImageData(width: 900)
+      }
+    }
+    cta: file(relativePath: { eq: "kandungaw.jpg" }) {
+      childImageSharp {
+        gatsbyImageData(layout: FULL_WIDTH, quality: 75)
+      }
+    }
+    allMarkdownRemark(sort: { frontmatter: { date: DESC } }) {
+      nodes {
+        id
+        fields {
+          slug
+        }
+        frontmatter {
+          title
+          dateDisplay
+          location
+          elevation
+          category
+          excerpt
+          cover {
+            childImageSharp {
+              gatsbyImageData(width: 800, aspectRatio: 1.6)
+            }
+          }
+        }
+      }
+    }
+  }
+`
 
-        <section id="about" class="number wow fadeInUp" data-wow-delay="300ms">
-            <div class="container-fluid">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6 opaline col-md-offset-6 pull-right">
-                            <div class="row">
-                                <div class="col-md-offset-1 col-md-10">
-                                    <h3>Why we climb the mountains high?</h3>
-                                    <p>Sure, climbing mountains are tiring and can be dangerous! Sometimes we have to travel very far just to get to the top.</p>
-                                    <p>But for us, being in the mountains is the best feelings and purest form of exploration. Every mountain has its own hardships and character to conquer. <strong>Every climb is a new challenge to overcome and new memories to make </strong> with our friends. Keep climbing till our body can't.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="photos" className="gallery wow fadeInUp" data-wow-delay="300ms">
-        	<h2>Tribu Siga Gallery Area</h2>
-        	<Slide {...properties}>
-			    <div className="each-slide">
-			        <div style={{'backgroundImage': `url(${slide1})`}}>
-			        	<div className="transbox">
-				 	       <h4>Mt. Talinis, Valencia, Negros Oriental</h4>
-				 	       <h5>April 15-18, 2017</h5>
-			 	       </div>
-			        </div>
-			    </div>
-			    <div className="each-slide">
-			        <div style={{'backgroundImage': `url(${slide2})`}}>
-			        <div className="transbox">
-			 	       <h4>Basic Mountaineering Course 1</h4>
-			 	       <h5>June 12, 2017</h5>
-			 	      </div>
-			        </div>
-			    </div>
-			    <div className="each-slide">
-			        <div style={{'backgroundImage': `url(${slide3})`}}>
-			        <div className="transbox">
-			 	       <h4>Mt. Mandalagan, Bacolod, Negros Occidental</h4>
-			 	       <h5>Sept 01-03, 2017</h5>
-			 	    </div>
-			    </div>
-				</div>
-				<div className="each-slide">
-			        <div style={{'backgroundImage': `url(${slide4})`}}>
-			        <div className="transbox">
-			 	       <h4>Kandungaw Peak, Dalaguete, Cebu</h4>
-			 	       <h5>October 07-08, 2017</h5>
-			 	    </div>
-			        </div>
-				</div>
-				<div className="each-slide">
-			        <div style={{'backgroundImage': `url(${slide5})`}}>
-			        <div className="transbox">
-			 	       <h4>Mt. Apo Day Hike, Davao</h4>
-			 	       <h5>Nov 3, 2017</h5>
-			 	    </div>
-			        </div>
-				</div>
-				<div className="each-slide">
-			        <div style={{'backgroundImage': `url(${slide6})`}}>
-			        <div className="transbox">
-			 	       <h4>Tribu Siga 1st Anniversary</h4>
-			 	       <h5>January 13-14, 2018</h5>
-			 	    </div>
-			        </div>
-				</div>
-				<div className="each-slide">
-			        <div style={{'backgroundImage': `url(${slide7})`}}>
-			        <div className="transbox">
-			 	       <h4>Mt. Guiting Guiting, Sibuyan Island, Romblon</h4>
-			 	       <h5>March 30 - April 01, 2018</h5>
-			 	    </div>
-			        </div>
-				</div>
-			</Slide>
-        </section>
-    </div>
-</Layout>
-)
+export const Head = () => <Seo />
+
+export default IndexPage

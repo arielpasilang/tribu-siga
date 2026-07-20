@@ -1,23 +1,26 @@
 {
-  "name": "gatsby-starter-hello-world",
-  "description": "Gatsby hello world starter",
+  "name": "tribu-siga",
+  "description": "Tribu Siga Mountaineers — adventure journal and photo gallery",
+  "version": "2.0.0",
   "license": "MIT",
   "scripts": {
     "develop": "gatsby develop",
+    "start": "gatsby develop",
     "build": "gatsby build",
-    "serve": "gatsby serve"
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
   },
   "dependencies": {
-    "bootstrap": "^4.1.3",
-    "gatsby": "^2.0.0",
-    "gatsby-plugin-google-fonts": "0.0.4",
-    "gatsby-plugin-typography": "^2.2.0",
-    "react": "^16.5.1",
-    "react-dom": "^16.5.1",
-    "react-sidebar": "^3.0.2",
-    "react-slideshow-image": "^1.0.10",
-    "react-typography": "^0.16.13",
-    "typography": "^0.16.17",
-    "typography-theme-fairy-gates": "^0.15.11"
+    "@fontsource-variable/fraunces": "^5.0.0",
+    "@fontsource-variable/outfit": "^5.0.0",
+    "gatsby": "^5.14.0",
+    "gatsby-plugin-image": "^3.14.0",
+    "gatsby-plugin-manifest": "^5.14.0",
+    "gatsby-plugin-sharp": "^5.14.0",
+    "gatsby-source-filesystem": "^5.14.0",
+    "gatsby-transformer-remark": "^6.14.0",
+    "gatsby-transformer-sharp": "^5.14.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
