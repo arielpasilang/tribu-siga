@@ -56,7 +56,15 @@ typings/
 
 # dotenv environment variables file
 .env
+.env.development
+.env.production
+.env.local
+studio/.env
 
 .cache/
 public
 yarn-error.log
+
+# Sanity Studio local runtime/build output
+studio/.sanity/
+studio/dist/

@@ -3,26 +3,26 @@ import { Link } from "gatsby"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 const AdventureCard = ({ adventure }) => {
-  const { frontmatter, fields } = adventure
-  const cover = getImage(frontmatter.cover)
+  const cover = getImage(adventure.cover?.asset)
+  const path = `/adventures/${adventure.slug.current}/`
 
   return (
     <article className="adventure-card">
       <div className="cover">
-        {cover && <GatsbyImage image={cover} alt={frontmatter.title} />}
+        {cover && <GatsbyImage image={cover} alt={adventure.title} />}
       </div>
       <div className="body">
         <div className="meta">
-          <span className="chip">{frontmatter.category}</span>
-          <span>{frontmatter.dateDisplay}</span>
+          <span className="chip">{adventure.category}</span>
+          <span>{adventure.dateDisplay}</span>
         </div>
         <h3>
-          <Link to={fields.slug}>{frontmatter.title}</Link>
+          <Link to={path}>{adventure.title}</Link>
         </h3>
-        <p className="excerpt">{frontmatter.excerpt}</p>
+        <p className="excerpt">{adventure.excerpt}</p>
         <div className="foot">
-          <span>{frontmatter.location}</span>
-          <span>{frontmatter.elevation}</span>
+          <span>{adventure.location}</span>
+          <span>{adventure.elevation}</span>
         </div>
       </div>
     </article>

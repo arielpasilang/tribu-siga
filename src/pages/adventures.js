@@ -5,14 +5,14 @@ import Seo from "../components/seo"
 import AdventureCard from "../components/adventure-card"
 
 const AdventuresPage = ({ data }) => {
-  const adventures = data.allMarkdownRemark.nodes
-  const categories = ["All", ...new Set(adventures.map(a => a.frontmatter.category))]
+  const adventures = data.allSanityExpedition.nodes
+  const categories = ["All", ...new Set(adventures.map(a => a.category))]
   const [active, setActive] = React.useState("All")
 
   const shown =
     active === "All"
       ? adventures
-      : adventures.filter(a => a.frontmatter.category === active)
+      : adventures.filter(a => a.category === active)
 
   return (
     <Layout>
@@ -52,23 +52,21 @@ const AdventuresPage = ({ data }) => {
 
 export const query = graphql`
   query {
-    allMarkdownRemark(sort: { frontmatter: { date: DESC } }) {
+    allSanityExpedition(sort: { date: DESC }) {
       nodes {
         id
-        fields {
-          slug
+        slug {
+          current
         }
-        frontmatter {
-          title
-          dateDisplay
-          location
-          elevation
-          category
-          excerpt
-          cover {
-            childImageSharp {
-              gatsbyImageData(width: 800, aspectRatio: 1.6)
-            }
+        title
+        dateDisplay
+        location
+        elevation
+        category
+        excerpt
+        cover {
+          asset {
+            gatsbyImageData(width: 800, aspectRatio: 1.6)
           }
         }
       }

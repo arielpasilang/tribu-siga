@@ -1,0 +1,9 @@
+[build]
+  command = "npm run build"
+  publish = "public"
+
+[functions]
+  directory = "netlify/functions"
+
+# The /dashboard* path binding for netlify/edge-functions/protect-dashboard.js
+# is declared inline in that file via `export const config`.

@@ -9,7 +9,7 @@ const IndexPage = ({ data }) => {
   const hero = getImage(data.hero)
   const story = getImage(data.story)
   const cta = getImage(data.cta)
-  const adventures = data.allMarkdownRemark.nodes
+  const adventures = data.allSanityExpedition.nodes
   const featured = adventures.slice(0, 3)
 
   return (
@@ -188,23 +188,21 @@ export const query = graphql`
         gatsbyImageData(layout: FULL_WIDTH, quality: 75)
       }
     }
-    allMarkdownRemark(sort: { frontmatter: { date: DESC } }) {
+    allSanityExpedition(sort: { date: DESC }) {
       nodes {
         id
-        fields {
-          slug
+        slug {
+          current
         }
-        frontmatter {
-          title
-          dateDisplay
-          location
-          elevation
-          category
-          excerpt
-          cover {
-            childImageSharp {
-              gatsbyImageData(width: 800, aspectRatio: 1.6)
-            }
+        title
+        dateDisplay
+        location
+        elevation
+        category
+        excerpt
+        cover {
+          asset {
+            gatsbyImageData(width: 800, aspectRatio: 1.6)
           }
         }
       }

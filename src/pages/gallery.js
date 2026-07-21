@@ -5,14 +5,37 @@ import Layout from "../components/layout"
 import Seo from "../components/seo"
 
 const GalleryPage = ({ data }) => {
-  const shots = data.allMarkdownRemark.nodes.filter(n => n.frontmatter.cover)
-  const [selected, setSelected] = React.useState(null)
+  const albums = data.allSanityGallery.nodes
+  const [openAlbum, setOpenAlbum] = React.useState(null)
+  const [photoIndex, setPhotoIndex] = React.useState(0)
+
+  const closeLightbox = React.useCallback(() => setOpenAlbum(null), [])
+
+  const showPrev = React.useCallback(() => {
+    setPhotoIndex(i => (openAlbum ? (i - 1 + openAlbum.images.length) % openAlbum.images.length : i))
+  }, [openAlbum])
+
+  const showNext = React.useCallback(() => {
+    setPhotoIndex(i => (openAlbum ? (i + 1) % openAlbum.images.length : i))
+  }, [openAlbum])
 
   React.useEffect(() => {
-    const onKey = e => e.key === "Escape" && setSelected(null)
+    const onKey = e => {
+      if (e.key === "Escape") closeLightbox()
+      if (e.key === "ArrowLeft") showPrev()
+      if (e.key === "ArrowRight") showNext()
+    }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
-  }, [])
+  }, [closeLightbox, showPrev, showNext])
+
+  const openGallery = album => {
+    setOpenAlbum(album)
+    setPhotoIndex(0)
+  }
+
+  const photo = openAlbum ? openAlbum.images[photoIndex] : null
+  const photoImg = photo ? getImage(photo.asset) : null
 
   return (
     <Layout>
@@ -21,27 +44,28 @@ const GalleryPage = ({ data }) => {
           <span className="eyebrow">Looking back</span>
           <h1 className="display">Gallery</h1>
           <p className="lead">
-            Moments from the trail — every photo links back to the expedition
-            it was taken on. Click any shot to view it full size.
+            Photo albums from the trail — click an album to browse the full
+            set, and follow through to the expedition it belongs to.
           </p>
         </div>
       </section>
 
       <section className="container" style={{ paddingBottom: "6rem" }}>
         <div className="gallery-grid">
-          {shots.map(node => {
-            const img = getImage(node.frontmatter.cover)
-            if (!img) return null
+          {albums.map(album => {
+            const cover = getImage(album.coverImage?.asset)
+            if (!cover) return null
             return (
               <button
-                key={node.id}
+                key={album.id}
                 className="gallery-item"
-                onClick={() => setSelected(node)}
-                aria-label={`View photo from ${node.frontmatter.title}`}
+                onClick={() => openGallery(album)}
+                aria-label={`View gallery: ${album.title}`}
               >
-                <GatsbyImage image={img} alt={node.frontmatter.title} />
+                <GatsbyImage image={cover} alt={album.title} />
                 <span className="caption">
-                  {node.frontmatter.title} · {node.frontmatter.dateDisplay}
+                  {album.title} · {album.images.length} photo
+                  {album.images.length === 1 ? "" : "s"}
                 </span>
               </button>
             )
@@ -49,28 +73,60 @@ const GalleryPage = ({ data }) => {
         </div>
       </section>
 
-      {selected && (
+      {openAlbum && photo && (
         <div
           className="lightbox"
           role="dialog"
           aria-modal="true"
-          onClick={() => setSelected(null)}
+          onClick={closeLightbox}
         >
-          <button className="close" aria-label="Close" onClick={() => setSelected(null)}>
+          <button className="close" aria-label="Close" onClick={closeLightbox}>
             ✕
           </button>
+          {openAlbum.images.length > 1 && (
+            <>
+              <button
+                className="nav-arrow prev"
+                aria-label="Previous photo"
+                onClick={e => {
+                  e.stopPropagation()
+                  showPrev()
+                }}
+              >
+                ‹
+              </button>
+              <button
+                className="nav-arrow next"
+                aria-label="Next photo"
+                onClick={e => {
+                  e.stopPropagation()
+                  showNext()
+                }}
+              >
+                ›
+              </button>
+            </>
+          )}
           <figure onClick={e => e.stopPropagation()}>
-            <GatsbyImage
-              image={getImage(selected.frontmatter.coverLarge)}
-              alt={selected.frontmatter.title}
-              objectFit="contain"
-            />
+            {photoImg && (
+              <GatsbyImage
+                image={photoImg}
+                alt={photo.alt || openAlbum.title}
+                objectFit="contain"
+              />
+            )}
             <figcaption>
               <span>
-                <strong>{selected.frontmatter.title}</strong> ·{" "}
-                {selected.frontmatter.dateDisplay}
+                <strong>{openAlbum.title}</strong>
+                {photo.caption ? ` · ${photo.caption}` : ""}
+                {openAlbum.images.length > 1 &&
+                  ` · ${photoIndex + 1}/${openAlbum.images.length}`}
               </span>
-              <Link to={selected.fields.slug}>Read the story →</Link>
+              {openAlbum.relatedExpedition && (
+                <Link to={`/adventures/${openAlbum.relatedExpedition.slug.current}/`}>
+                  Read the story →
+                </Link>
+              )}
             </figcaption>
           </figure>
         </div>
@@ -81,24 +137,25 @@ const GalleryPage = ({ data }) => {
 
 export const query = graphql`
   query {
-    allMarkdownRemark(sort: { frontmatter: { date: DESC } }) {
+    allSanityGallery(sort: { date: DESC }) {
       nodes {
         id
-        fields {
-          slug
-        }
-        frontmatter {
-          title
-          dateDisplay
-          cover {
-            childImageSharp {
-              gatsbyImageData(width: 700, aspectRatio: 1.3333)
-            }
+        title
+        coverImage {
+          asset {
+            gatsbyImageData(width: 700, aspectRatio: 1.3333)
           }
-          coverLarge: cover {
-            childImageSharp {
-              gatsbyImageData(width: 1600)
-            }
+        }
+        relatedExpedition {
+          slug {
+            current
+          }
+        }
+        images {
+          caption
+          alt
+          asset {
+            gatsbyImageData(width: 1600)
           }
         }
       }
@@ -109,7 +166,7 @@ export const query = graphql`
 export const Head = () => (
   <Seo
     title="Gallery"
-    description="Photos from Tribu Siga expeditions across the Philippines."
+    description="Photo albums from Tribu Siga expeditions across the Philippines."
   />
 )
 

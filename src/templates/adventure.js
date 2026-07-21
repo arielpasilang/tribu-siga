@@ -3,13 +3,12 @@ import { Link, graphql } from "gatsby"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
+import PortableText from "../components/portable-text"
 
-const AdventureTemplate = ({ data }) => {
-  const post = data.markdownRemark
-  const { frontmatter } = post
-  const cover = getImage(frontmatter.cover)
-  const previous = data.previous
-  const next = data.next
+const AdventureTemplate = ({ data, pageContext }) => {
+  const expedition = data.sanityExpedition
+  const cover = getImage(expedition.cover?.asset)
+  const { previousTitle, previousSlug, nextTitle, nextSlug } = pageContext
 
   return (
     <Layout>
@@ -17,15 +16,15 @@ const AdventureTemplate = ({ data }) => {
         {cover && (
           <GatsbyImage
             image={cover}
-            alt={frontmatter.title}
+            alt={expedition.title}
             className="hero-bg"
             loading="eager"
             objectFit="cover"
           />
         )}
         <div className="container">
-          <span className="chip">{frontmatter.category}</span>
-          <h1 className="display">{frontmatter.title}</h1>
+          <span className="chip">{expedition.category}</span>
+          <h1 className="display">{expedition.title}</h1>
         </div>
       </section>
 
@@ -33,36 +32,35 @@ const AdventureTemplate = ({ data }) => {
         <div className="detail-meta">
           <div className="item">
             <strong>Date</strong>
-            {frontmatter.dateDisplay}
+            {expedition.dateDisplay}
           </div>
           <div className="item">
             <strong>Location</strong>
-            {frontmatter.location}
+            {expedition.location}
           </div>
           <div className="item">
             <strong>Elevation</strong>
-            {frontmatter.elevation}
+            {expedition.elevation}
           </div>
         </div>
 
-        <article
-          className="prose"
-          dangerouslySetInnerHTML={{ __html: post.html }}
-        />
+        <article className="prose">
+          <PortableText value={expedition._rawBody} />
+        </article>
 
         <nav className="prevnext">
-          {previous ? (
-            <Link to={previous.fields.slug} className="prev">
+          {previousSlug ? (
+            <Link to={previousSlug} className="prev">
               <span className="dir">← Earlier climb</span>
-              <div className="name">{previous.frontmatter.title}</div>
+              <div className="name">{previousTitle}</div>
             </Link>
           ) : (
             <span />
           )}
-          {next ? (
-            <Link to={next.fields.slug} className="next">
+          {nextSlug ? (
+            <Link to={nextSlug} className="next">
               <span className="dir">Next climb →</span>
-              <div className="name">{next.frontmatter.title}</div>
+              <div className="name">{nextTitle}</div>
             </Link>
           ) : (
             <span />
@@ -80,46 +78,28 @@ const AdventureTemplate = ({ data }) => {
 }
 
 export const query = graphql`
-  query ($id: String!, $previousId: String, $nextId: String) {
-    markdownRemark(id: { eq: $id }) {
-      html
-      frontmatter {
-        title
-        dateDisplay
-        location
-        elevation
-        category
-        excerpt
-        cover {
-          childImageSharp {
-            gatsbyImageData(layout: FULL_WIDTH, quality: 80)
-          }
+  query ($id: String!) {
+    sanityExpedition(id: { eq: $id }) {
+      title
+      dateDisplay
+      location
+      elevation
+      category
+      excerpt
+      cover {
+        asset {
+          gatsbyImageData(layout: FULL_WIDTH, placeholder: BLURRED)
         }
       }
-    }
-    previous: markdownRemark(id: { eq: $previousId }) {
-      fields {
-        slug
-      }
-      frontmatter {
-        title
-      }
-    }
-    next: markdownRemark(id: { eq: $nextId }) {
-      fields {
-        slug
-      }
-      frontmatter {
-        title
-      }
+      _rawBody(resolveReferences: { maxDepth: 5 })
     }
   }
 `
 
 export const Head = ({ data }) => (
   <Seo
-    title={data.markdownRemark.frontmatter.title}
-    description={data.markdownRemark.frontmatter.excerpt}
+    title={data.sanityExpedition.title}
+    description={data.sanityExpedition.excerpt}
   />
 )
 
