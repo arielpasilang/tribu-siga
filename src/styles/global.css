@@ -159,14 +159,12 @@ a {
   /* Always-on scrim (not just when scrolled) so the nav stays readable
      over the top of any hero photo, light or dark. */
   background: linear-gradient(to bottom, rgba(8, 11, 9, 0.55), rgba(8, 11, 9, 0));
-  transition: background 0.3s ease, border-color 0.3s ease;
-  border-bottom: 1px solid transparent;
+  transition: background 0.3s ease;
 }
 
 .site-header.scrolled {
   background: rgba(13, 18, 16, 0.82);
   backdrop-filter: blur(14px);
-  border-bottom-color: var(--line);
 }
 
 .site-header .inner {
@@ -178,8 +176,8 @@ a {
 
 .brand {
   display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.6rem;
   font-family: var(--font-display);
   font-weight: 640;
   font-size: 1.25rem;
@@ -188,8 +186,10 @@ a {
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
-.brand .flame-dot {
-  color: var(--ember);
+.brand-logo {
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .brand span.tribe {
