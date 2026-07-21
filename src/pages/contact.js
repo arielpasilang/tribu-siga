@@ -39,10 +39,11 @@ const ContactPage = () => (
   </Layout>
 )
 
-export const Head = () => (
+export const Head = ({ location }) => (
   <Seo
     title="Contact"
     description="Get in touch with Tribu Siga Mountaineers — open climbs, training courses, and new members welcome."
+    pathname={location.pathname}
   />
 )
 

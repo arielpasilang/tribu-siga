@@ -74,10 +74,11 @@ export const query = graphql`
   }
 `
 
-export const Head = () => (
+export const Head = ({ location }) => (
   <Seo
     title="Hikes & Milestone"
     description="The Tribu Siga logbook — every climb, training day, and milestone since January 2017."
+    pathname={location.pathname}
   />
 )
 

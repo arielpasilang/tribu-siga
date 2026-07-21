@@ -75,6 +75,8 @@ const LoginPage = () => {
   )
 }
 
-export const Head = () => <Seo title="Log in" />
+export const Head = ({ location }) => (
+  <Seo title="Log in" pathname={location.pathname} noindex />
+)
 
 export default LoginPage

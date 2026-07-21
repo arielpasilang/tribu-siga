@@ -81,6 +81,7 @@ export const query = graphql`
   query ($id: String!) {
     sanityExpedition(id: { eq: $id }) {
       title
+      date
       dateDisplay
       location
       elevation
@@ -89,6 +90,7 @@ export const query = graphql`
       cover {
         asset {
           gatsbyImageData(layout: FULL_WIDTH, placeholder: BLURRED)
+          url
         }
       }
       _rawBody(resolveReferences: { maxDepth: 5 })
@@ -96,10 +98,14 @@ export const query = graphql`
   }
 `
 
-export const Head = ({ data }) => (
+export const Head = ({ data, location }) => (
   <Seo
     title={data.sanityExpedition.title}
     description={data.sanityExpedition.excerpt}
+    pathname={location.pathname}
+    image={data.sanityExpedition.cover?.asset?.url}
+    article
+    datePublished={data.sanityExpedition.date}
   />
 )
 

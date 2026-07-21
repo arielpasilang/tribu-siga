@@ -40,5 +40,19 @@ module.exports = {
         icon: `src/images/logo.jpg`,
       },
     },
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        excludes: [`/dashboard`, `/dashboard/*`, `/login`, `/login/*`],
+      },
+    },
+    {
+      resolve: `gatsby-plugin-robots-txt`,
+      options: {
+        host: `https://tribusiga.com`,
+        sitemap: `https://tribusiga.com/sitemap-index.xml`,
+        policy: [{ userAgent: `*`, disallow: [`/dashboard`] }],
+      },
+    },
   ],
 }

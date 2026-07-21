@@ -23,6 +23,8 @@ const NotFoundPage = () => (
   </Layout>
 )
 
-export const Head = () => <Seo title="Page not found" />
+export const Head = ({ location }) => (
+  <Seo title="Page not found" pathname={location.pathname} noindex />
+)
 
 export default NotFoundPage

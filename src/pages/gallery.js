@@ -163,10 +163,11 @@ export const query = graphql`
   }
 `
 
-export const Head = () => (
+export const Head = ({ location }) => (
   <Seo
     title="Gallery"
     description="Photo albums from Tribu Siga hikes across the Philippines."
+    pathname={location.pathname}
   />
 )
 

@@ -141,10 +141,11 @@ export const query = graphql`
   }
 `
 
-export const Head = () => (
+export const Head = ({ location }) => (
   <Seo
     title="About"
     description="The story of Tribu Siga Mountaineers — founded January 7, 2017 on the Halfmoon Trail to Osmeña Peak, Cebu."
+    pathname={location.pathname}
   />
 )
 

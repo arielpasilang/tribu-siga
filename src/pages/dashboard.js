@@ -371,6 +371,8 @@ export const query = graphql`
   }
 `
 
-export const Head = () => <Seo title="Dashboard" />
+export const Head = ({ location }) => (
+  <Seo title="Dashboard" pathname={location.pathname} noindex />
+)
 
 export default DashboardPage
