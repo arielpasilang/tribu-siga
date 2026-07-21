@@ -18,7 +18,7 @@ const IndexPage = ({ data }) => {
         {hero && (
           <GatsbyImage
             image={hero}
-            alt="The tribe at Lake Nailig, Mt. Talinis"
+            alt="Tribu Siga hikers traversing a cloud-covered ridge"
             className="hero-bg"
             loading="eager"
             objectFit="cover"
@@ -151,7 +151,7 @@ const IndexPage = ({ data }) => {
 
       <section className="cta-band">
         {cta && (
-          <GatsbyImage image={cta} alt="Limestone crags of Kandungaw Peak" className="hero-bg" objectFit="cover" />
+          <GatsbyImage image={cta} alt="Tribu Siga and the community at a tribe gathering" className="hero-bg" objectFit="cover" />
         )}
         <div className="container">
           <span className="eyebrow" style={{ justifyContent: "center" }}>
@@ -173,7 +173,7 @@ const IndexPage = ({ data }) => {
 
 export const query = graphql`
   query {
-    hero: file(relativePath: { eq: "talinis.jpg" }) {
+    hero: file(relativePath: { eq: "main-banner.jpg" }) {
       childImageSharp {
         gatsbyImageData(layout: FULL_WIDTH, quality: 80)
       }
@@ -183,7 +183,7 @@ export const query = graphql`
         gatsbyImageData(width: 900)
       }
     }
-    cta: file(relativePath: { eq: "kandungaw.jpg" }) {
+    cta: file(relativePath: { eq: "join-the-tribe.jpg" }) {
       childImageSharp {
         gatsbyImageData(layout: FULL_WIDTH, quality: 75)
       }
