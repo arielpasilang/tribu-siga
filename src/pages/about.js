@@ -71,7 +71,7 @@ const AboutPage = ({ data }) => {
               <p>
                 Nobody gets left on the trail. That's been the rule since day
                 one on the Halfmoon Trail, and it's the rule on every
-                expedition we run.
+                hike we run.
               </p>
             </div>
           </div>
@@ -99,7 +99,7 @@ const AboutPage = ({ data }) => {
               <div className="icon">⛰️</div>
               <h3>We go big</h3>
               <p>
-                At least one or two major expeditions every year — from the
+                At least one or two major climbs every year — from the
                 Horns of Negros to the knife edge of G2 and the roof of the
                 Philippines.
               </p>

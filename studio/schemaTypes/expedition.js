@@ -3,7 +3,7 @@ import { CATEGORIES } from "../../shared/categories"
 
 export const expedition = defineType({
   name: "expedition",
-  title: "Expedition",
+  title: "Hike",
   type: "document",
   fields: [
     defineField({

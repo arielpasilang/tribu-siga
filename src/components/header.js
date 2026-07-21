@@ -2,7 +2,7 @@ import * as React from "react"
 import { Link } from "gatsby"
 
 const links = [
-  { to: "/adventures/", label: "Expeditions" },
+  { to: "/adventures/", label: "Hikes & Milestone" },
   { to: "/gallery/", label: "Gallery" },
   { to: "/about/", label: "About" },
   { to: "/contact/", label: "Contact" },

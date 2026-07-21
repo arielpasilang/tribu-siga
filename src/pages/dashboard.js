@@ -172,7 +172,7 @@ const ExpeditionForm = () => {
       {status.state === "success" && <p className="form-success">{status.message}</p>}
 
       <button className="btn btn-primary" type="submit" disabled={status.state === "submitting"}>
-        {status.state === "submitting" ? "Adding…" : "Add expedition"}
+        {status.state === "submitting" ? "Adding…" : "Add hike"}
       </button>
     </form>
   )
@@ -250,7 +250,7 @@ const GalleryForm = ({ expeditions }) => {
         <input id="gal-date" type="date" value={date} onChange={e => setDate(e.target.value)} required />
       </div>
       <div className="field">
-        <label htmlFor="gal-related">Related expedition (optional)</label>
+        <label htmlFor="gal-related">Related hike (optional)</label>
         <select
           id="gal-related"
           value={relatedExpeditionId}
@@ -331,7 +331,7 @@ const DashboardPage = ({ data }) => {
         <div className="container">
           <span className="eyebrow">Tribe only</span>
           <h1 className="display">Dashboard</h1>
-          <p className="lead">Add a new expedition or gallery straight from the site.</p>
+          <p className="lead">Add a new hike or gallery straight from the site.</p>
         </div>
       </section>
 
@@ -341,7 +341,7 @@ const DashboardPage = ({ data }) => {
             className={tab === "expedition" ? "btn btn-primary" : "btn btn-ghost"}
             onClick={() => setTab("expedition")}
           >
-            Add Expedition
+            Add Hike
           </button>
           <button
             className={tab === "gallery" ? "btn btn-primary" : "btn btn-ghost"}

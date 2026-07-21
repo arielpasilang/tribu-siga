@@ -19,7 +19,7 @@ const AdventuresPage = ({ data }) => {
       <section className="page-hero">
         <div className="container">
           <span className="eyebrow">The logbook</span>
-          <h1 className="display">Expeditions</h1>
+          <h1 className="display">Hikes & Milestone</h1>
           <p className="lead">
             Every climb since day one — the majors, the day hikes, the training
             days, and the milestones in between.
@@ -76,7 +76,7 @@ export const query = graphql`
 
 export const Head = () => (
   <Seo
-    title="Expeditions"
+    title="Hikes & Milestone"
     description="The Tribu Siga logbook — every climb, training day, and milestone since January 2017."
   />
 )

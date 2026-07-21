@@ -40,7 +40,7 @@ export const gallery = defineType({
     }),
     defineField({
       name: "relatedExpedition",
-      title: "Related expedition",
+      title: "Related hike",
       type: "reference",
       to: [{ type: "expedition" }],
     }),

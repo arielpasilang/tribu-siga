@@ -45,7 +45,7 @@ const GalleryPage = ({ data }) => {
           <h1 className="display">Gallery</h1>
           <p className="lead">
             Photo albums from the trail — click an album to browse the full
-            set, and follow through to the expedition it belongs to.
+            set, and follow through to the hike it belongs to.
           </p>
         </div>
       </section>
@@ -166,7 +166,7 @@ export const query = graphql`
 export const Head = () => (
   <Seo
     title="Gallery"
-    description="Photo albums from Tribu Siga expeditions across the Philippines."
+    description="Photo albums from Tribu Siga hikes across the Philippines."
   />
 )
 

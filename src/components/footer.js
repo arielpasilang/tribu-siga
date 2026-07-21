@@ -16,7 +16,7 @@ const Footer = () => (
           </p>
         </div>
         <nav>
-          <Link to="/adventures/">Expeditions</Link>
+          <Link to="/adventures/">Hikes & Milestone</Link>
           <Link to="/gallery/">Gallery</Link>
           <Link to="/about/">About</Link>
           <Link to="/contact/">Contact</Link>

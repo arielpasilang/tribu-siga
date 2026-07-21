@@ -38,7 +38,7 @@ const IndexPage = ({ data }) => {
           </p>
           <div className="actions">
             <Link to="/adventures/" className="btn btn-primary">
-              Our Expeditions →
+              Our Hikes & Milestone →
             </Link>
             <Link to="/about/" className="btn btn-ghost">
               The Story
@@ -52,7 +52,7 @@ const IndexPage = ({ data }) => {
         <div className="container grid">
           <div className="stat">
             <div className="num">{adventures.length}</div>
-            <div className="label">Expeditions</div>
+            <div className="label">Hikes & Milestone</div>
           </div>
           <div className="stat">
             <div className="num">2,954 m</div>
@@ -102,7 +102,7 @@ const IndexPage = ({ data }) => {
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="container">
           <span className="eyebrow">The logbook</span>
-          <h2 className="display section-title">Latest expeditions</h2>
+          <h2 className="display section-title">Latest hikes & milestone</h2>
           <div className="card-grid">
             {featured.map(node => (
               <AdventureCard key={node.id} adventure={node} />
@@ -160,7 +160,7 @@ const IndexPage = ({ data }) => {
           <h2 className="display">The mountains are calling — come with us.</h2>
           <p>
             We run open climbs, training courses, and at least one major
-            expedition every year. New members are always welcome.
+            hike every year. New members are always welcome.
           </p>
           <Link to="/contact/" className="btn btn-primary">
             Get in touch →
