@@ -1,4 +1,11 @@
-const { SignJWT, jwtVerify } = require(`jose`)
+// jose@6 is ESM-only, but this file (and its callers) are CommonJS, so it's
+// loaded via dynamic import() rather than require() — cached after the
+// first call so warm Lambda invocations don't re-import it.
+let josePromise
+function loadJose() {
+  if (!josePromise) josePromise = import(`jose`)
+  return josePromise
+}
 
 const COOKIE_NAME = `ts_session`
 const MAX_AGE_SECONDS = 60 * 60 * 24 * 7 // 7 days
@@ -10,6 +17,7 @@ function getSecret() {
 }
 
 async function signSession(username) {
+  const { SignJWT } = await loadJose()
   return new SignJWT({ sub: username })
     .setProtectedHeader({ alg: `HS256` })
     .setIssuedAt()
@@ -38,6 +46,7 @@ async function verifySession(cookieHeader) {
   const token = readCookie(cookieHeader, COOKIE_NAME)
   if (!token) return null
   try {
+    const { jwtVerify } = await loadJose()
     const { payload } = await jwtVerify(token, getSecret())
     return payload.sub || null
   } catch {
