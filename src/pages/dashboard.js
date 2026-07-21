@@ -1,5 +1,5 @@
 import * as React from "react"
-import { graphql, navigate } from "gatsby"
+import { Link, navigate } from "gatsby"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 import { CATEGORIES } from "../../shared/categories"
@@ -12,6 +12,17 @@ async function postJson(url, body) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   })
+  if (res.status === 401) {
+    navigate("/login/")
+    throw new Error("Session expired — please log in again.")
+  }
+  const data = await res.json().catch(() => ({}))
+  if (!res.ok) throw new Error(data.error || "Something went wrong")
+  return data
+}
+
+async function getJson(url) {
+  const res = await fetch(url, { credentials: "include" })
   if (res.status === 401) {
     navigate("/login/")
     throw new Error("Session expired — please log in again.")
@@ -58,7 +69,7 @@ async function uploadVideo(file) {
   return data.assetId
 }
 
-const ExpeditionForm = () => {
+const ExpeditionForm = ({ onAdded }) => {
   const [fields, setFields] = React.useState({
     title: "",
     date: "",
@@ -85,7 +96,7 @@ const ExpeditionForm = () => {
       const cover = await resizeImageToBase64(coverFile)
       const coverAssetId = await uploadImage(cover)
       await postJson("/.netlify/functions/create-expedition", { ...fields, coverAssetId })
-      setStatus({ state: "success", message: `"${fields.title}" was added.` })
+      setStatus({ state: "idle" })
       setFields({
         title: "",
         date: "",
@@ -98,6 +109,7 @@ const ExpeditionForm = () => {
       })
       setCoverFile(null)
       e.target.reset()
+      onAdded()
     } catch (err) {
       setStatus({ state: "error", message: err.message })
     }
@@ -197,7 +209,6 @@ const ExpeditionForm = () => {
       </div>
 
       {status.state === "error" && <p className="form-error">{status.message}</p>}
-      {status.state === "success" && <p className="form-success">{status.message}</p>}
 
       <button className="btn btn-primary" type="submit" disabled={status.state === "submitting"}>
         {status.state === "submitting" ? "Adding…" : "Add hike"}
@@ -208,7 +219,7 @@ const ExpeditionForm = () => {
 
 const emptyImageRow = () => ({ key: Math.random().toString(36).slice(2), file: null, caption: "" })
 
-const GalleryForm = ({ expeditions }) => {
+const GalleryForm = ({ expeditions, onAdded }) => {
   const [title, setTitle] = React.useState("")
   const [date, setDate] = React.useState("")
   const [coverFile, setCoverFile] = React.useState(null)
@@ -253,13 +264,14 @@ const GalleryForm = ({ expeditions }) => {
         images,
         relatedExpeditionId: relatedExpeditionId || null,
       })
-      setStatus({ state: "success", message: `"${title}" was added.` })
+      setStatus({ state: "idle" })
       setTitle("")
       setDate("")
       setCoverFile(null)
       setRelatedExpeditionId("")
       setImageRows([emptyImageRow(), emptyImageRow(), emptyImageRow()])
       e.target.reset()
+      onAdded()
     } catch (err) {
       setStatus({ state: "error", message: err.message })
     }
@@ -342,7 +354,6 @@ const GalleryForm = ({ expeditions }) => {
       </button>
 
       {status.state === "error" && <p className="form-error">{status.message}</p>}
-      {status.state === "success" && <p className="form-success">{status.message}</p>}
 
       <button className="btn btn-primary" type="submit" disabled={status.state === "submitting"}>
         {status.state === "submitting" ? "Adding…" : "Add gallery"}
@@ -351,9 +362,118 @@ const GalleryForm = ({ expeditions }) => {
   )
 }
 
-const DashboardPage = ({ data }) => {
+const ExpeditionTable = ({ expeditions, onDelete, deletingId }) => {
+  if (expeditions.length === 0) return <p>No hikes yet.</p>
+  return (
+    <table className="admin-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Date</th>
+          <th>Category</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {expeditions.map(exp => (
+          <tr key={exp._id}>
+            <td>{exp.title}</td>
+            <td>{exp.dateDisplay}</td>
+            <td>{exp.category}</td>
+            <td className="actions">
+              <Link to={`/adventures/${exp.slug}/`} target="_blank" rel="noreferrer">
+                View
+              </Link>
+              <button
+                className="link-danger"
+                onClick={() => onDelete(exp._id, exp.title)}
+                disabled={deletingId === exp._id}
+              >
+                {deletingId === exp._id ? "Deleting…" : "Delete"}
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )
+}
+
+const GalleryTable = ({ galleries, onDelete, deletingId }) => {
+  if (galleries.length === 0) return <p>No galleries yet.</p>
+  return (
+    <table className="admin-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Date</th>
+          <th>Items</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {galleries.map(gal => (
+          <tr key={gal._id}>
+            <td>{gal.title}</td>
+            <td>{gal.date}</td>
+            <td>{gal.itemCount}</td>
+            <td className="actions">
+              <Link to="/gallery/" target="_blank" rel="noreferrer">
+                View
+              </Link>
+              <button
+                className="link-danger"
+                onClick={() => onDelete(gal._id, gal.title)}
+                disabled={deletingId === gal._id}
+              >
+                {deletingId === gal._id ? "Deleting…" : "Delete"}
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )
+}
+
+const DashboardPage = () => {
   const [tab, setTab] = React.useState("expedition")
-  const expeditions = data.allSanityExpedition.nodes
+  const [content, setContent] = React.useState({ expeditions: [], galleries: [] })
+  const [loading, setLoading] = React.useState(true)
+  const [showAddExpedition, setShowAddExpedition] = React.useState(false)
+  const [showAddGallery, setShowAddGallery] = React.useState(false)
+  const [deletingId, setDeletingId] = React.useState(null)
+  const [listError, setListError] = React.useState(null)
+
+  const refresh = React.useCallback(async () => {
+    setLoading(true)
+    try {
+      const data = await getJson("/.netlify/functions/list-content")
+      setContent(data)
+      setListError(null)
+    } catch (err) {
+      setListError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  React.useEffect(() => {
+    refresh()
+  }, [refresh])
+
+  const handleDelete = async (id, title) => {
+    if (!window.confirm(`Delete "${title}"? This can't be undone.`)) return
+    setDeletingId(id)
+    try {
+      await postJson("/.netlify/functions/delete-document", { id })
+      await refresh()
+    } catch (err) {
+      window.alert(err.message)
+    } finally {
+      setDeletingId(null)
+    }
+  }
 
   const logout = async () => {
     await fetch("/.netlify/functions/logout", { method: "POST", credentials: "include" })
@@ -366,7 +486,7 @@ const DashboardPage = ({ data }) => {
         <div className="container">
           <span className="eyebrow">Tribe only</span>
           <h1 className="display">Dashboard</h1>
-          <p className="lead">Add a new hike or gallery straight from the site.</p>
+          <p className="lead">Manage hikes, milestones, and galleries.</p>
         </div>
       </section>
 
@@ -376,35 +496,84 @@ const DashboardPage = ({ data }) => {
             className={tab === "expedition" ? "btn btn-primary" : "btn btn-ghost"}
             onClick={() => setTab("expedition")}
           >
-            Add Hike
+            Hikes & Milestone
           </button>
           <button
             className={tab === "gallery" ? "btn btn-primary" : "btn btn-ghost"}
             onClick={() => setTab("gallery")}
           >
-            Add Gallery
+            Gallery
           </button>
           <button className="btn btn-ghost" onClick={logout} style={{ marginLeft: "auto" }}>
             Log out
           </button>
         </div>
 
-        {tab === "expedition" ? <ExpeditionForm /> : <GalleryForm expeditions={expeditions} />}
+        {listError && <p className="form-error">{listError}</p>}
+
+        {tab === "expedition" ? (
+          <>
+            <div className="dashboard-toolbar">
+              <button
+                className="btn btn-primary"
+                onClick={() => setShowAddExpedition(s => !s)}
+              >
+                {showAddExpedition ? "Cancel" : "+ Add hike"}
+              </button>
+            </div>
+            {showAddExpedition && (
+              <div style={{ marginBottom: "2.5rem" }}>
+                <ExpeditionForm
+                  onAdded={() => {
+                    setShowAddExpedition(false)
+                    refresh()
+                  }}
+                />
+              </div>
+            )}
+            {loading ? (
+              <p>Loading…</p>
+            ) : (
+              <ExpeditionTable
+                expeditions={content.expeditions}
+                onDelete={handleDelete}
+                deletingId={deletingId}
+              />
+            )}
+          </>
+        ) : (
+          <>
+            <div className="dashboard-toolbar">
+              <button className="btn btn-primary" onClick={() => setShowAddGallery(s => !s)}>
+                {showAddGallery ? "Cancel" : "+ Add gallery"}
+              </button>
+            </div>
+            {showAddGallery && (
+              <div style={{ marginBottom: "2.5rem" }}>
+                <GalleryForm
+                  expeditions={content.expeditions}
+                  onAdded={() => {
+                    setShowAddGallery(false)
+                    refresh()
+                  }}
+                />
+              </div>
+            )}
+            {loading ? (
+              <p>Loading…</p>
+            ) : (
+              <GalleryTable
+                galleries={content.galleries}
+                onDelete={handleDelete}
+                deletingId={deletingId}
+              />
+            )}
+          </>
+        )}
       </section>
     </Layout>
   )
 }
-
-export const query = graphql`
-  query {
-    allSanityExpedition(sort: { date: DESC }) {
-      nodes {
-        _id
-        title
-      }
-    }
-  }
-`
 
 export const Head = ({ location }) => (
   <Seo title="Dashboard" pathname={location.pathname} noindex />

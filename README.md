@@ -87,11 +87,14 @@ Two ways:
 
 - **Sanity Studio** (`cd studio && npm run dev`, or your deployed Studio URL)
   — full editing, including rich-text formatting in the expedition body.
-- **`/dashboard`** on the live site (`netlify dev` locally) — a quicker
-  create-only form for expeditions and galleries, gated behind `/login`. Not
-  linked from the site's navigation; go to the URL directly. There's no
-  register page — the one login user is seeded via `npm run create-user`
-  (step 7 above).
+- **`/dashboard`** on the live site (`netlify dev` locally) — lists existing
+  hikes/galleries in a table (View/Delete per row, fetched fresh on every
+  load) with a "+ Add" button that reveals the create form, gated behind
+  `/login`. Not linked from the site's navigation; go to the URL directly.
+  There's no register page — the one login user is seeded via
+  `npm run create-user` (step 7 above). Deleting only removes the document
+  itself, not its uploaded images/video (Sanity Studio's "clean up unused
+  assets" handles orphaned files if that matters to you).
 
 Either way: **Expedition** = title, date, location, elevation, category
 (`Major Climb`, `Day Hike`, `Overnight`, `Training`, or `Milestone`), excerpt,
@@ -110,8 +113,9 @@ with a 20MB cap; keep clips short.
 - `shared/categories.js` — the 5 expedition categories, shared by the Studio
   schema, the dashboard form, and the `create-expedition` function
 - `netlify/functions/` — `login`, `logout`, `create-expedition`,
-  `create-gallery`, `upload-image` (Node; verify the session cookie and talk
-  to Sanity with the write token)
+  `create-gallery`, `upload-image`, `list-content` (dashboard tables),
+  `delete-document` (Node; verify the session cookie and talk to Sanity with
+  the write/read token)
 - `netlify/edge-functions/protect-dashboard.js` — redirects to `/login` if
   the session cookie is missing/invalid before `/dashboard*` is ever served
 - `netlify/edge-functions/upload-video.js` — a *separate* upload path for

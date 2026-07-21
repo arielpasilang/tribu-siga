@@ -1061,3 +1061,53 @@ a {
   flex: 1;
   min-width: 12rem;
 }
+
+.dashboard-toolbar {
+  margin-bottom: 1.5rem;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 3rem;
+  font-size: 0.95rem;
+}
+
+.admin-table th,
+.admin-table td {
+  text-align: left;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-table th {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.admin-table td.actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.link-danger {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--flame);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.link-danger:hover {
+  color: var(--ember-bright);
+}
+
+.link-danger:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
