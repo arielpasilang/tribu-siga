@@ -245,7 +245,7 @@ const GalleryForm = ({ expeditions }) => {
         >
           <option value="">None</option>
           {expeditions.map(exp => (
-            <option key={exp.id} value={exp.id}>
+            <option key={exp._id} value={exp._id}>
               {exp.title}
             </option>
           ))}
@@ -351,7 +351,7 @@ export const query = graphql`
   query {
     allSanityExpedition(sort: { date: DESC }) {
       nodes {
-        id
+        _id
         title
       }
     }
