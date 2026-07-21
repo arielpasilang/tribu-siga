@@ -96,18 +96,28 @@ Two ways:
 Either way: **Expedition** = title, date, location, elevation, category
 (`Major Climb`, `Day Hike`, `Overnight`, `Training`, or `Milestone`), excerpt,
 cover image, body. **Gallery** = title, date, cover image, a set of photos
-(each with an optional caption), and an optional link to a related expedition.
+and/or videos (each with an optional caption), and an optional link to a
+related expedition — which also makes the gallery show up on that
+expedition's page with a click-to-expand lightbox.
+
+Videos upload as-is (no transcoding — see `upload-video.js` below for why)
+with a 20MB cap; keep clips short.
 
 ## Project structure
 
-- `studio/` — the Sanity Studio app (schemas: `expedition`, `gallery`, `user`)
+- `studio/` — the Sanity Studio app (schemas: `expedition`, `gallery`,
+  `captionedImage`, `captionedVideo`, `user`)
 - `shared/categories.js` — the 5 expedition categories, shared by the Studio
   schema, the dashboard form, and the `create-expedition` function
 - `netlify/functions/` — `login`, `logout`, `create-expedition`,
-  `create-gallery` (Node; verify the session cookie and talk to Sanity with
-  the write token)
+  `create-gallery`, `upload-image` (Node; verify the session cookie and talk
+  to Sanity with the write token)
 - `netlify/edge-functions/protect-dashboard.js` — redirects to `/login` if
   the session cookie is missing/invalid before `/dashboard*` is ever served
+- `netlify/edge-functions/upload-video.js` — a *separate* upload path for
+  video. Regular Netlify Functions cap requests at ~6MB, far too small for
+  video, so this runs as an Edge Function (Deno, no such cap) and streams
+  the raw file straight through to Sanity's upload API instead.
 - `content/adventures/` — the original markdown posts, kept as a backup
   (no longer read once migrated into Sanity)
 - `src/images/` — static site images (hero/section photography, logo — not

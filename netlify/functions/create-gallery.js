@@ -31,13 +31,16 @@ exports.handler = async event => {
 
   const galleryImages = images
     .filter(img => img?.assetId)
-    .map(img => ({
-      _type: `captionedImage`,
-      _key: img.assetId.replace(/[^a-zA-Z0-9]/g, ``).slice(-12),
-      asset: { _type: `reference`, _ref: img.assetId },
-      caption: img.caption || ``,
-      alt: img.alt || ``,
-    }))
+    .map(img => {
+      const isVideo = img.type === `video`
+      return {
+        _type: isVideo ? `captionedVideo` : `captionedImage`,
+        _key: img.assetId.replace(/[^a-zA-Z0-9]/g, ``).slice(-12),
+        asset: { _type: `reference`, _ref: img.assetId },
+        caption: img.caption || ``,
+        ...(isVideo ? {} : { alt: img.alt || `` }),
+      }
+    })
 
   if (galleryImages.length === 0) {
     return { statusCode: 400, body: JSON.stringify({ error: `No valid images provided` }) }

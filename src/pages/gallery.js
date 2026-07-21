@@ -35,7 +35,8 @@ const GalleryPage = ({ data }) => {
   }
 
   const photo = openAlbum ? openAlbum.images[photoIndex] : null
-  const photoImg = photo ? getImage(photo.asset) : null
+  const isVideo = photo?.__typename === "SanityCaptionedVideo"
+  const photoImg = photo && !isVideo ? getImage(photo.asset) : null
 
   return (
     <Layout>
@@ -64,7 +65,7 @@ const GalleryPage = ({ data }) => {
               >
                 <GatsbyImage image={cover} alt={album.title} />
                 <span className="caption">
-                  {album.title} · {album.images.length} photo
+                  {album.title} · {album.images.length} item
                   {album.images.length === 1 ? "" : "s"}
                 </span>
               </button>
@@ -108,12 +109,21 @@ const GalleryPage = ({ data }) => {
             </>
           )}
           <figure onClick={e => e.stopPropagation()}>
-            {photoImg && (
-              <GatsbyImage
-                image={photoImg}
-                alt={photo.alt || openAlbum.title}
-                objectFit="contain"
+            {isVideo ? (
+              <video
+                src={photo.asset?.url}
+                controls
+                autoPlay
+                style={{ maxWidth: "100%", maxHeight: "78vh", borderRadius: "var(--radius)" }}
               />
+            ) : (
+              photoImg && (
+                <GatsbyImage
+                  image={photoImg}
+                  alt={photo.alt || openAlbum.title}
+                  objectFit="contain"
+                />
+              )
             )}
             <figcaption>
               <span>
@@ -152,10 +162,19 @@ export const query = graphql`
           }
         }
         images {
-          caption
-          alt
-          asset {
-            gatsbyImageData(width: 1600)
+          __typename
+          ... on SanityCaptionedImage {
+            caption
+            alt
+            asset {
+              gatsbyImageData(width: 1600)
+            }
+          }
+          ... on SanityCaptionedVideo {
+            caption
+            asset {
+              url
+            }
           }
         }
       }

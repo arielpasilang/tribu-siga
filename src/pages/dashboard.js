@@ -30,6 +30,34 @@ async function uploadImage({ base64, filename }) {
   return data.assetId
 }
 
+const MAX_VIDEO_BYTES = 20 * 1024 * 1024
+
+// Videos go to a separate Edge Function (/api/upload-video), not a
+// regular Netlify Function — regular Functions cap requests at ~6MB,
+// far too small for video. The file is sent as a raw binary body
+// (no base64/JSON) straight through to Sanity.
+async function uploadVideo(file) {
+  if (file.size > MAX_VIDEO_BYTES) {
+    throw new Error(`"${file.name}" is over the 20MB video limit.`)
+  }
+  const res = await fetch("/api/upload-video", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": file.type || "video/mp4",
+      "X-Filename": file.name,
+    },
+    body: file,
+  })
+  if (res.status === 401) {
+    navigate("/login/")
+    throw new Error("Session expired — please log in again.")
+  }
+  const data = await res.json().catch(() => ({}))
+  if (!res.ok) throw new Error(data.error || "Video upload failed")
+  return data.assetId
+}
+
 const ExpeditionForm = () => {
   const [fields, setFields] = React.useState({
     title: "",
@@ -199,7 +227,7 @@ const GalleryForm = ({ expeditions }) => {
       return
     }
     if (usableRows.length === 0) {
-      setStatus({ state: "error", message: "Add at least one photo." })
+      setStatus({ state: "error", message: "Add at least one photo or video." })
       return
     }
     setStatus({ state: "submitting" })
@@ -208,9 +236,13 @@ const GalleryForm = ({ expeditions }) => {
         resizeImageToBase64(coverFile).then(uploadImage),
         Promise.all(
           usableRows.map(async row => {
+            if (row.file.type.startsWith("video/")) {
+              const assetId = await uploadVideo(row.file)
+              return { assetId, caption: row.caption, type: "video" }
+            }
             const resized = await resizeImageToBase64(row.file)
             const assetId = await uploadImage(resized)
-            return { assetId, caption: row.caption }
+            return { assetId, caption: row.caption, type: "image" }
           })
         ),
       ])
@@ -275,15 +307,18 @@ const GalleryForm = ({ expeditions }) => {
         />
       </div>
 
-      <p className="eyebrow">Photos</p>
+      <p className="eyebrow">Photos & videos</p>
       {imageRows.map((row, i) => (
         <div className="gallery-image-row" key={row.key}>
           <div className="field">
-            <label htmlFor={`gal-img-${row.key}`}>Photo {i + 1}</label>
+            <label htmlFor={`gal-img-${row.key}`}>
+              Photo/video {i + 1}
+              {row.file?.type.startsWith("video/") && " (video, 20MB max)"}
+            </label>
             <input
               id={`gal-img-${row.key}`}
               type="file"
-              accept="image/*"
+              accept="image/*,video/*"
               onChange={e => updateRow(row.key, { file: e.target.files?.[0] || null })}
             />
           </div>
@@ -303,7 +338,7 @@ const GalleryForm = ({ expeditions }) => {
         className="btn btn-ghost"
         onClick={() => setImageRows(rows => [...rows, emptyImageRow()])}
       >
-        + Add another photo
+        + Add another photo or video
       </button>
 
       {status.state === "error" && <p className="form-error">{status.message}</p>}

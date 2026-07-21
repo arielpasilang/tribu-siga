@@ -750,13 +750,28 @@ a {
   aspect-ratio: 4 / 3;
 }
 
-.gallery-item .gatsby-image-wrapper {
+.gallery-item .gatsby-image-wrapper,
+.gallery-item video {
   height: 100%;
+  width: 100%;
+  object-fit: cover;
   transition: transform 0.5s ease;
 }
 
-.gallery-item:hover .gatsby-image-wrapper {
+.gallery-item:hover .gatsby-image-wrapper,
+.gallery-item:hover video {
   transform: scale(1.05);
+}
+
+.gallery-item .play-icon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 1.4rem;
+  color: var(--text);
+  background: rgba(13, 18, 16, 0.25);
+  pointer-events: none;
 }
 
 .gallery-item .caption {

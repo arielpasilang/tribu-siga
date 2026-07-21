@@ -33,9 +33,9 @@ export const gallery = defineType({
     }),
     defineField({
       name: "images",
-      title: "Images",
+      title: "Photos & Videos",
       type: "array",
-      of: [{ type: "captionedImage" }],
+      of: [{ type: "captionedImage" }, { type: "captionedVideo" }],
       validation: Rule => Rule.min(1),
     }),
     defineField({
