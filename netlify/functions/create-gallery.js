@@ -1,8 +1,10 @@
 const { sanityWriteClient } = require(`./_shared/sanity`)
 const { verifySession } = require(`./_shared/session`)
-const { decodeBase64Image } = require(`./_shared/base64-image`)
 const { uniqueSlug } = require(`./_shared/slugify`)
 
+// Expects images to already be uploaded (via upload-image.js) — this just
+// assembles the document from asset ids, so it stays fast and small
+// regardless of how many photos the gallery has.
 exports.handler = async event => {
   if (event.httpMethod !== `POST`) {
     return { statusCode: 405, body: `Method Not Allowed` }
@@ -21,46 +23,35 @@ exports.handler = async event => {
     return { statusCode: 400, body: JSON.stringify({ error: `Invalid request` }) }
   }
 
-  const { title, date, cover, images, relatedExpeditionId } = data
+  const { title, date, coverAssetId, images, relatedExpeditionId } = data
 
-  if (!title || !date || !cover?.base64 || !Array.isArray(images) || images.length === 0) {
+  if (!title || !date || !coverAssetId || !Array.isArray(images) || images.length === 0) {
     return { statusCode: 400, body: JSON.stringify({ error: `Missing required fields` }) }
   }
 
-  const client = sanityWriteClient()
-
-  const coverDecoded = decodeBase64Image(cover.base64)
-  const coverAsset = await client.assets.upload(`image`, coverDecoded.buffer, {
-    filename: cover.filename || `cover.jpg`,
-  })
-
-  const uploadedImages = []
-  for (const img of images) {
-    if (!img?.base64) continue
-    const { buffer } = decodeBase64Image(img.base64)
-    const asset = await client.assets.upload(`image`, buffer, {
-      filename: img.filename || `photo.jpg`,
-    })
-    uploadedImages.push({
+  const galleryImages = images
+    .filter(img => img?.assetId)
+    .map(img => ({
       _type: `captionedImage`,
-      _key: asset._id.replace(/[^a-zA-Z0-9]/g, ``).slice(-12),
-      asset: { _type: `reference`, _ref: asset._id },
+      _key: img.assetId.replace(/[^a-zA-Z0-9]/g, ``).slice(-12),
+      asset: { _type: `reference`, _ref: img.assetId },
       caption: img.caption || ``,
       alt: img.alt || ``,
-    })
-  }
+    }))
 
-  if (uploadedImages.length === 0) {
+  if (galleryImages.length === 0) {
     return { statusCode: 400, body: JSON.stringify({ error: `No valid images provided` }) }
   }
+
+  const client = sanityWriteClient()
 
   const doc = {
     _type: `gallery`,
     title,
     slug: { _type: `slug`, current: uniqueSlug(title) },
     date,
-    coverImage: { _type: `image`, asset: { _type: `reference`, _ref: coverAsset._id } },
-    images: uploadedImages,
+    coverImage: { _type: `image`, asset: { _type: `reference`, _ref: coverAssetId } },
+    images: galleryImages,
   }
 
   if (relatedExpeditionId) {

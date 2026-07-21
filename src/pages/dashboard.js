@@ -21,6 +21,15 @@ async function postJson(url, body) {
   return data
 }
 
+// Each image is uploaded in its own small request (rather than bundling
+// every photo's base64 into one big create-* call) so payload size and
+// per-request time stay well under Netlify Functions' limits no matter
+// how many photos a gallery has.
+async function uploadImage({ base64, filename }) {
+  const data = await postJson("/.netlify/functions/upload-image", { base64, filename })
+  return data.assetId
+}
+
 const ExpeditionForm = () => {
   const [fields, setFields] = React.useState({
     title: "",
@@ -46,7 +55,8 @@ const ExpeditionForm = () => {
     setStatus({ state: "submitting" })
     try {
       const cover = await resizeImageToBase64(coverFile)
-      await postJson("/.netlify/functions/create-expedition", { ...fields, cover })
+      const coverAssetId = await uploadImage(cover)
+      await postJson("/.netlify/functions/create-expedition", { ...fields, coverAssetId })
       setStatus({ state: "success", message: `"${fields.title}" was added.` })
       setFields({
         title: "",
@@ -194,17 +204,20 @@ const GalleryForm = ({ expeditions }) => {
     }
     setStatus({ state: "submitting" })
     try {
-      const cover = await resizeImageToBase64(coverFile)
-      const images = await Promise.all(
-        usableRows.map(async row => {
-          const resized = await resizeImageToBase64(row.file)
-          return { ...resized, caption: row.caption }
-        })
-      )
+      const [coverAssetId, images] = await Promise.all([
+        resizeImageToBase64(coverFile).then(uploadImage),
+        Promise.all(
+          usableRows.map(async row => {
+            const resized = await resizeImageToBase64(row.file)
+            const assetId = await uploadImage(resized)
+            return { assetId, caption: row.caption }
+          })
+        ),
+      ])
       await postJson("/.netlify/functions/create-gallery", {
         title,
         date,
-        cover,
+        coverAssetId,
         images,
         relatedExpeditionId: relatedExpeditionId || null,
       })
