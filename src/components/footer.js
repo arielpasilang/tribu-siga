@@ -1,12 +1,11 @@
-import * as React from "react"
-import { Link } from "gatsby"
+import Link from "next/link"
 
 const Footer = () => (
   <footer className="site-footer">
     <div className="container">
       <div className="top">
         <div>
-          <Link to="/" className="brand">
+          <Link href="/" className="brand">
             <span className="flame-dot">▲</span>
             TRIBU <span className="tribe">SIGA</span>
           </Link>
@@ -16,10 +15,10 @@ const Footer = () => (
           </p>
         </div>
         <nav>
-          <Link to="/adventures/">Expeditions</Link>
-          <Link to="/gallery/">Gallery</Link>
-          <Link to="/about/">About</Link>
-          <Link to="/contact/">Contact</Link>
+          <Link href="/adventures">Hikes & Milestone</Link>
+          <Link href="/gallery">Gallery</Link>
+          <Link href="/about">About</Link>
+          <Link href="/contact">Contact</Link>
         </nav>
       </div>
       <div className="bottom">
