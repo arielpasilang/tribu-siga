@@ -17,7 +17,7 @@ function unauthorized(request) {
       {
         status: 401,
         headers: {
-          "WWW-Authenticate": `Bearer resource_metadata="${origin}/.well-known/oauth-protected-resource/"`,
+          "WWW-Authenticate": `Bearer resource_metadata="${origin}/.well-known/oauth-protected-resource"`,
         },
       }
     )

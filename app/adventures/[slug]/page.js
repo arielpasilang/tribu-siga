@@ -45,7 +45,7 @@ export default async function AdventurePage({ params }) {
     description: expedition.excerpt,
     image: cover?.src,
     datePublished: expedition.date,
-    url: `${site.url}/adventures/${expedition.slug}/`,
+    url: `${site.url}/adventures/${expedition.slug}`,
     publisher: {
       "@type": "Organization",
       name: site.title,

@@ -197,7 +197,7 @@ export async function createStory({ kind, ...input }) {
     id: created._id,
     title,
     slug: created.slug.current,
-    url: `${site.url}/adventures/${created.slug.current}/`,
+    url: `${site.url}/adventures/${created.slug.current}`,
     galleryId: null,
     photoCount: 0,
   }

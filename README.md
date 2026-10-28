@@ -59,8 +59,8 @@ A pasted token from the dashboard still works. **Revoke token** disconnects appr
 | | |
 | --- | --- |
 | Client ID | `tribu-siga` |
-| Local server | `http://localhost:3000/api/mcp/` |
-| Live server | `https://tribusiga.com/api/mcp/` |
+| Local server | `http://localhost:3000/api/mcp` |
+| Live server | `https://tribusiga.com/api/mcp` |
 
 Cursor can still use a pasted token in `~/.cursor/mcp.json`. Generate that token from the dashboard, under **Paste a token instead**.
 
@@ -68,7 +68,7 @@ Cursor can still use a pasted token in `~/.cursor/mcp.json`. Generate that token
 {
   "mcpServers": {
     "tribu-siga": {
-      "url": "https://tribusiga.com/api/mcp/",
+      "url": "https://tribusiga.com/api/mcp",
       "headers": {
         "Authorization": "Bearer YOUR_TOKEN"
       }

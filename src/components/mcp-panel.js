@@ -4,7 +4,7 @@ import * as React from "react"
 import { site } from "../lib/site"
 
 const CLIENT_ID = "tribu-siga"
-const LIVE_SERVER = `${site.url}/api/mcp/`
+const LIVE_SERVER = `${site.url}/api/mcp`
 
 const TOOLS = [
   ["list_hikes", "Climbs, training days, and overnights. Milestones are left out."],
@@ -18,7 +18,7 @@ const TOOLS = [
 async function readJson(res) {
   const data = await res.json().catch(() => ({}))
   if (res.status === 401) {
-    window.location.href = "/login/"
+    window.location.href = "/login"
     throw new Error("Session expired — please log in again.")
   }
   if (!res.ok) throw new Error(data.error || "Something went wrong")
@@ -42,7 +42,7 @@ const McpPanel = () => {
   const [serverUrl, setServerUrl] = React.useState("")
 
   React.useEffect(() => {
-    setServerUrl(`${window.location.origin}/api/mcp/`)
+    setServerUrl(`${window.location.origin}/api/mcp`)
     let cancelled = false
     fetch("/api/mcp-token", { credentials: "include" })
       .then(readJson)

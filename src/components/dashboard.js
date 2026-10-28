@@ -18,7 +18,7 @@ async function postJson(url, body) {
     body: JSON.stringify(body),
   })
   if (res.status === 401) {
-    window.location.href = "/login/"
+    window.location.href = "/login"
     throw new Error("Session expired — please log in again.")
   }
   const data = await res.json().catch(() => ({}))
@@ -29,7 +29,7 @@ async function postJson(url, body) {
 async function getJson(url) {
   const res = await fetch(url, { credentials: "include" })
   if (res.status === 401) {
-    window.location.href = "/login/"
+    window.location.href = "/login"
     throw new Error("Session expired — please log in again.")
   }
   const data = await res.json().catch(() => ({}))
@@ -59,7 +59,7 @@ async function uploadVideo(file) {
     body: file,
   })
   if (res.status === 401) {
-    window.location.href = "/login/"
+    window.location.href = "/login"
     throw new Error("Session expired — please log in again.")
   }
   const data = await res.json().catch(() => ({}))

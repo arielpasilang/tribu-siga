@@ -26,7 +26,8 @@ const LoginForm = () => {
         throw new Error(data.error || "Login failed")
       }
       const next = new URLSearchParams(window.location.search).get("next") || ""
-      const returnToConnect = next.startsWith("/oauth/authorize/") && !next.startsWith("//")
+      const returnPath = next.split("?")[0]
+      const returnToConnect = returnPath === "/oauth/authorize" || returnPath === "/oauth/authorize/"
       router.push(returnToConnect ? next : "/dashboard")
       router.refresh()
     } catch (err) {

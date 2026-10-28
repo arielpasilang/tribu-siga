@@ -45,8 +45,8 @@ export default async function AuthorizePage({ searchParams }) {
   const jar = await cookies()
   const user = await verifyToken(jar.get(SESSION_COOKIE)?.value)
   if (!user) {
-    const next = `/oauth/authorize/?${new URLSearchParams(fields).toString()}`
-    redirect(`/login/?next=${encodeURIComponent(next)}`)
+    const next = `/oauth/authorize?${new URLSearchParams(fields).toString()}`
+    redirect(`/login?next=${encodeURIComponent(next)}`)
   }
 
   return (

@@ -6,7 +6,7 @@ export async function middleware(request) {
   const user = await verifyToken(token)
   if (user) return NextResponse.next()
 
-  const loginUrl = new URL("/login/", request.url)
+  const loginUrl = new URL("/login", request.url)
   return NextResponse.redirect(loginUrl)
 }
 

@@ -37,7 +37,7 @@ export async function POST(request) {
   const jar = await cookies()
   const username = await verifyToken(jar.get(SESSION_COOKIE)?.value)
   if (!username) {
-    const next = `/oauth/authorize/?${new URLSearchParams({
+    const next = `/oauth/authorize?${new URLSearchParams({
       client_id: clientId,
       redirect_uri: redirectUri,
       code_challenge: read("code_challenge"),
@@ -45,7 +45,7 @@ export async function POST(request) {
       state: read("state"),
       response_type: "code",
     }).toString()}`
-    return NextResponse.redirect(new URL(`/login/?next=${encodeURIComponent(next)}`, request.url), 303)
+    return NextResponse.redirect(new URL(`/login?next=${encodeURIComponent(next)}`, request.url), 303)
   }
 
   if (read("code_challenge_method") !== "S256" || !read("code_challenge")) {

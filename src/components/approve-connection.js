@@ -1,5 +1,5 @@
 const ApproveConnection = ({ clientName, clientId, redirectHost, fields }) => (
-  <form className="auth-form" method="post" action="/api/oauth/approve/">
+  <form className="auth-form" method="post" action="/api/oauth/approve">
     {Object.entries(fields).map(([name, value]) => (
       <input key={name} type="hidden" name={name} value={value || ""} />
     ))}
